@@ -1,12 +1,18 @@
-function lengthOfLIS(nums) {
-  if (nums.length === 0) return 0;
-  const dp = new Array(nums.length).fill(1);
-  let max = 1;
-  for (let i = 1; i < nums.length; i++) {
-    for (let j = 0; j < i; j++) {
-      if (nums[i] > nums[j]) dp[i] = Math.max(dp[i], dp[j] + 1);
-    }
-    max = Math.max(max, dp[i]);
+function minPathSum(grid) {
+  const m = grid.length;
+  const n = grid[0].length;
+  const dp = new Array(m).fill(0).map(() => new Array(n).fill(0));
+  dp[0][0] = grid[0][0];
+  for (let i = 1; i < m; i++) {
+    dp[i][0] = dp[i - 1][0] + grid[i][0];
   }
-  return max;
+  for (let j = 1; j < n; j++) {
+    dp[0][j] = dp[0][j - 1] + grid[0][j];
+  }
+  for (let i = 1; i < m; i++) {
+    for (let j = 1; j < n; j++) {
+      dp[i][j] = grid[i][j] + Math.min(dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  return dp[m - 1][n - 1];
 }
